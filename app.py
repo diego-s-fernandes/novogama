@@ -73,25 +73,36 @@ def inject_css() -> None:
             --muted: #475569;
             --line: #e2e8f0;
             --blue: #1d4ed8;
+            --surface: #ffffff;
+            --bg: #f8fafc;
         }
         html, body, [class*="css"] {
-            font-family: "Segoe UI", "Inter", system-ui, -apple-system, sans-serif;
+            font-family: "Segoe UI", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-font-smoothing: antialiased;
         }
         .block-container {
-            padding-top: 1.4rem;
-            padding-bottom: 3rem;
-            max-width: 1500px;
+            padding-top: 1.2rem;
+            padding-bottom: 2.5rem;
+            max-width: 1440px;
         }
-        h1, h2, h3 { color: var(--ink); letter-spacing: -0.02em; }
+        h1 { font-size: clamp(1.4rem, 4vw, 2.1rem); color: var(--ink); letter-spacing: -0.02em; margin-bottom: 0.2rem; }
+        h2 { font-size: clamp(1.2rem, 3.2vw, 1.7rem); color: var(--ink); letter-spacing: -0.02em; }
+        h3 { font-size: clamp(1.05rem, 2.6vw, 1.35rem); color: var(--ink); }
+        h4 { font-size: clamp(0.95rem, 2.2vw, 1.15rem); color: var(--ink); }
+
         [data-testid="stMetric"] {
-            background: #ffffff;
+            background: var(--surface);
             border: 1px solid var(--line);
-            border-radius: 14px;
-            padding: 12px 16px;
-            box-shadow: 0 1px 2px rgba(15, 23, 42, .04);
+            border-radius: 12px;
+            padding: 12px 14px;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, .04);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        [data-testid="stMetric"]:hover {
+            box-shadow: 0 3px 8px rgba(15, 23, 42, .08);
         }
         [data-testid="stMetricLabel"] p {
-            font-size: .78rem;
+            font-size: .75rem;
             color: var(--muted);
             font-weight: 600;
             text-transform: uppercase;
@@ -99,38 +110,39 @@ def inject_css() -> None:
         }
         [data-testid="stMetricValue"] {
             color: var(--ink);
-            font-size: 1.55rem;
+            font-size: clamp(1.25rem, 2.8vw, 1.6rem);
             font-weight: 700;
         }
         .status-banner {
-            background: #ffffff;
+            background: var(--surface);
             border: 1px solid var(--line);
-            border-left: 6px solid var(--blue);
+            border-left: 5px solid var(--blue);
             border-radius: 12px;
-            padding: 14px 18px;
+            padding: 12px 16px;
             margin: 6px 0 14px 0;
             color: var(--ink);
-            font-size: .96rem;
+            font-size: .94rem;
             line-height: 1.45;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, .03);
         }
         .status-pill {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            padding: 4px 10px;
+            gap: 5px;
+            padding: 3px 9px;
             border-radius: 999px;
-            font-size: .78rem;
+            font-size: .76rem;
             font-weight: 700;
             letter-spacing: .02em;
             text-transform: uppercase;
         }
         .insight-box {
-            background: #f8fafc;
+            background: var(--bg);
             border: 1px solid var(--line);
             border-radius: 12px;
-            padding: 12px 16px;
+            padding: 11px 14px;
             color: var(--muted);
-            font-size: .92rem;
+            font-size: .90rem;
             line-height: 1.5;
         }
         .insight-box b { color: var(--ink); }
@@ -139,44 +151,111 @@ def inject_css() -> None:
             font-size: .82rem;
             line-height: 1.45;
         }
-        .map-legend {
-            position: fixed;
-            right: 22px;
-            bottom: 28px;
-            z-index: 9999;
-            background: rgba(255,255,255,.96);
-            border: 1px solid #cbd5e1;
-            border-radius: 10px;
-            padding: 10px 12px;
-            font-family: "Segoe UI", Arial, sans-serif;
-            font-size: 11px;
-            color: #0f172a;
-            box-shadow: 0 4px 14px rgba(15, 23, 42, .16);
-            line-height: 1.45;
-            max-width: 235px;
+
+        /* Abas com scroll horizontal suave e responsivo no mobile */
+        .stTabs [data-baseweb="tab-list"] {
+            gap: 6px;
+            overflow-x: auto;
+            flex-wrap: nowrap;
+            scrollbar-width: thin;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 2px;
         }
-        .map-legend .bar {
-            height: 8px;
-            width: 150px;
-            border-radius: 999px;
-            background: linear-gradient(90deg, #eff6ff, #93c5fd, #1d4ed8);
-            margin: 4px 0 6px 0;
-        }
-        .map-legend .dot {
-            display: inline-block;
-            border-radius: 50%;
-            background: #93c5fd;
-            border: 1px solid #1e3a8a;
-            margin-right: 5px;
-            vertical-align: middle;
-        }
-        .stTabs [data-baseweb="tab-list"] { gap: 10px; }
         .stTabs [data-baseweb="tab"] {
-            padding: 8px 14px;
+            padding: 8px 13px;
             border-radius: 8px 8px 0 0;
             font-weight: 600;
+            font-size: 0.90rem;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
-        div[data-testid="stDataFrame"] { border: 1px solid var(--line); border-radius: 10px; }
+
+        /* Tabelas e DataFrames responsivos */
+        div[data-testid="stDataFrame"] {
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            width: 100% !important;
+            overflow-x: auto !important;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Gráficos Plotly fluidos */
+        .js-plotly-plot, .plot-container {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+
+        /* Iframe do mapa */
+        iframe[title="streamlit_folium.st_folium"] {
+            width: 100% !important;
+            max-width: 100% !important;
+            border-radius: 12px !important;
+            border: 1px solid var(--line) !important;
+        }
+
+        /* -------------------------------------------------------------------
+           Adaptações responsivas específicas para Mobile / Tablet (< 768px)
+           ------------------------------------------------------------------- */
+        @media (max-width: 768px) {
+            .block-container {
+                padding-top: 0.8rem !important;
+                padding-bottom: 2rem !important;
+                padding-left: 0.75rem !important;
+                padding-right: 0.75rem !important;
+            }
+
+            /* Transforma os 4 cards de KPIs em grade 2x2 no celular */
+            [data-testid="stHorizontalBlock"]:has([data-testid="stMetric"]) {
+                display: grid !important;
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                gap: 8px !important;
+            }
+            [data-testid="stHorizontalBlock"]:has([data-testid="stMetric"]) > [data-testid="column"] {
+                width: 100% !important;
+                min-width: 0 !important;
+                flex: unset !important;
+            }
+
+            /* Colunas normais empilham verticalmente no celular */
+            [data-testid="stHorizontalBlock"]:not(:has([data-testid="stMetric"])) {
+                flex-direction: column !important;
+                gap: 12px !important;
+            }
+            [data-testid="stHorizontalBlock"]:not(:has([data-testid="stMetric"])) > [data-testid="column"] {
+                width: 100% !important;
+                min-width: 100% !important;
+                flex: 1 1 100% !important;
+            }
+
+            [data-testid="stMetric"] {
+                padding: 9px 11px !important;
+                border-radius: 10px !important;
+            }
+            [data-testid="stMetricValue"] {
+                font-size: 1.25rem !important;
+            }
+
+            .status-banner {
+                padding: 10px 12px !important;
+                font-size: 0.86rem !important;
+                margin-bottom: 10px !important;
+            }
+            .insight-box {
+                padding: 9px 12px !important;
+                font-size: 0.84rem !important;
+            }
+
+            /* Altura do mapa adaptada no celular para rolagem natural */
+            iframe[title="streamlit_folium.st_folium"] {
+                height: 420px !important;
+                min-height: 380px !important;
+            }
+
+            .stTabs [data-baseweb="tab"] {
+                font-size: 0.82rem !important;
+                padding: 6px 10px !important;
+            }
+        }
         </style>
         """,
         unsafe_allow_html=True,
@@ -256,16 +335,17 @@ def insight_box(text: str) -> None:
 def style_figure(fig: go.Figure, height: int = 380, showlegend: bool = False) -> go.Figure:
     fig.update_layout(
         height=height,
-        margin=dict(l=8, r=18, t=18, b=10),
+        margin=dict(l=10, r=16, t=24, b=16),
         plot_bgcolor="white",
         paper_bgcolor="white",
-        font=dict(family="Segoe UI, Inter, sans-serif", color=TEXT_COLOR, size=12),
+        font=dict(family="Segoe UI, Inter, -apple-system, sans-serif", color=TEXT_COLOR, size=11),
         showlegend=showlegend,
-        hoverlabel=dict(bgcolor="white", font_size=12),
+        hoverlabel=dict(bgcolor="white", font_size=11),
         legend=dict(orientation="h", yanchor="bottom", y=1.02, x=0),
+        autosize=True,
     )
-    fig.update_xaxes(showgrid=True, gridcolor=GRID_COLOR, zeroline=False)
-    fig.update_yaxes(showgrid=False, zeroline=False)
+    fig.update_xaxes(showgrid=True, gridcolor=GRID_COLOR, zeroline=False, automargin=True)
+    fig.update_yaxes(showgrid=False, zeroline=False, automargin=True)
     return fig
 
 
@@ -802,7 +882,7 @@ def _popup_html(
         else "Não — coordenada oficial do TSE"
     )
     return f"""
-    <div style="font-family:Segoe UI,Arial,sans-serif;font-size:12px;width:380px;color:#0f172a;">
+    <div style="font-family:Segoe UI,Arial,sans-serif;font-size:12px;width:min(340px, 82vw);max-width:100%;color:#0f172a;">
         <div style="font-size:14px;font-weight:700;margin-bottom:2px;">🏫 {html.escape(str(row['NM_LOCVOT']))}</div>
         <div style="color:#64748b;font-size:11px;margin-bottom:8px;">
             {html.escape(str(row['DS_ENDERECO']))}<br>
@@ -856,41 +936,64 @@ def _tooltip_html(row: pd.Series, candidate_total: int) -> str:
 
 
 def _map_legend(max_votos: int, max_share: float) -> str:
-    # O mapa é renderizado dentro de um iframe: o CSS do app não o alcança.
-    # Por isso a legenda usa estilos inline.
     base_dot = (
         "display:inline-block;border-radius:50%;background:#93c5fd;"
-        "border:1px solid #1e3a8a;vertical-align:middle;margin-right:6px;"
+        "border:1px solid #1e3a8a;vertical-align:middle;margin-right:5px;"
     )
     return f"""
-    <div style="position:fixed;right:22px;bottom:28px;z-index:9999;
-                background:rgba(255,255,255,.97);border:1px solid #cbd5e1;
-                border-radius:10px;padding:10px 12px;
-                font-family:'Segoe UI',Arial,sans-serif;font-size:11px;
-                color:#0f172a;box-shadow:0 4px 14px rgba(15,23,42,.18);
-                line-height:1.45;max-width:235px;">
-        <div style="font-weight:700;font-size:11px;margin-bottom:3px;">Legenda do mapa</div>
-        <div style="font-size:10px;color:#475569;">Tamanho = votos no local</div>
-        <div style="margin:3px 0;">
-            <span style="{base_dot}width:7px;height:7px;"></span>
-            <span style="font-size:10px;">poucos votos</span>
+    <style>
+    .map-legend-box {{
+        position: fixed;
+        right: 14px;
+        bottom: 20px;
+        z-index: 9999;
+        background: rgba(255, 255, 255, 0.96);
+        border: 1px solid #cbd5e1;
+        border-radius: 10px;
+        padding: 8px 11px;
+        font-family: 'Segoe UI', -apple-system, sans-serif;
+        font-size: 11px;
+        color: #0f172a;
+        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.16);
+        line-height: 1.4;
+        max-width: 220px;
+        backdrop-filter: blur(4px);
+    }}
+    @media (max-width: 600px) {{
+        .map-legend-box {{
+            right: 6px;
+            bottom: 8px;
+            padding: 5px 8px;
+            font-size: 10px;
+            max-width: 155px;
+            background: rgba(255, 255, 255, 0.94);
+        }}
+        .map-legend-box .legend-bar {{
+            width: 130px !important;
+        }}
+    }}
+    </style>
+    <div class="map-legend-box">
+        <div style="font-weight:700;font-size:11px;margin-bottom:2px;">Legenda do mapa</div>
+        <div style="font-size:10px;color:#475569;">Tamanho = votos</div>
+        <div style="margin:2px 0;">
+            <span style="{base_dot}width:6px;height:6px;"></span>
+            <span style="font-size:10px;">poucos</span>
+            <span style="{base_dot}width:14px;height:14px;margin-left:6px;"></span>
+            <span style="font-size:10px;">{format_int(max_votos)}</span>
         </div>
-        <div style="margin:2px 0 6px 0;">
-            <span style="{base_dot}width:17px;height:17px;"></span>
-            <span style="font-size:10px;">{format_int(max_votos)} votos</span>
-        </div>
-        <div style="font-size:10px;color:#475569;">Cor = % dos válidos no local</div>
-        <div style="height:8px;width:180px;border-radius:999px;
+        <div style="font-size:10px;color:#475569;margin-top:4px;">Cor = % dos válidos</div>
+        <div class="legend-bar" style="height:7px;width:170px;border-radius:999px;
                     background:linear-gradient(90deg,#eff6ff,#93c5fd,#1d4ed8);
-                    margin:4px 0 2px 0;"></div>
-        <div style="display:flex;justify-content:space-between;font-size:10px;width:180px;">
+                    margin:3px 0 2px 0;"></div>
+        <div class="legend-bar" style="display:flex;justify-content:space-between;font-size:9px;width:170px;color:#64748b;">
             <span>0%</span><span>{format_pct(max_share, 0)}</span>
         </div>
-        <div style="margin-top:7px;font-size:10px;color:#475569;">
-            <span style="display:inline-block;width:10px;height:10px;
+        <div style="margin-top:4px;font-size:9px;color:#475569;">
+            <span style="display:inline-block;width:9px;height:9px;
                          border:2px dashed #b45309;border-radius:50%;
-                         margin-right:5px;vertical-align:middle;"></span>
-            contorno tracejado = coordenada aproximada
+                         margin-right:4px;vertical-align:middle;"></span>
+            tracejado = aproximado
         </div>
     </div>
     """
@@ -1065,7 +1168,7 @@ def tab_map(
     )
     st_folium(
         map_obj,
-        height=640,
+        height=520,
         use_container_width=True,
         returned_objects=[],
         center=map_center,
