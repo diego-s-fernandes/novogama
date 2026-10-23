@@ -1,0 +1,42 @@
+{
+  "gerado_em": "2026-10-23T11:02:15-03:00",
+  "ano": 2024,
+  "turno": 1,
+  "municipio": "NOVO GAMA",
+  "uf": "GO",
+  "cargo": "Vereador",
+  "cd_municipio": 93327,
+  "fontes": {
+    "votacao": "D:\\trabalho\\Outros\\novogama\\data\\raw\\votacao_secao_2024_GO.zip",
+    "locais": "D:\\trabalho\\Outros\\novogama\\data\\raw\\eleitorado_local_votacao_2024.zip",
+    "candidatos": "D:\\trabalho\\Outros\\novogama\\data\\raw\\consulta_cand_2024.zip",
+    "urls": {
+      "votacao": "https://cdn.tse.jus.br/estatistica/sead/odsele/votacao_secao/votacao_secao_2024_GO.zip",
+      "locais": "https://cdn.tse.jus.br/estatistica/sead/odsele/eleitorado_locais_votacao/eleitorado_local_votacao_2024.zip",
+      "candidatos": "https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2024.zip"
+    }
+  },
+  "registros": {
+    "votacao": 15055,
+    "locais": 175,
+    "candidatos": 260,
+    "resumo": 260
+  },
+  "totais": {
+    "total_votos": 46694,
+    "votos_validos": 44588,
+    "votos_nominais": 43128,
+    "votos_legenda": 1460,
+    "votos_branco": 1308,
+    "votos_nulos": 798,
+    "n_secoes": 175,
+    "n_locais": 28,
+    "n_eleitores": 57546,
+    "n_candidatos": 241
+  },
+  "geolocalizacao": {
+    "locais_distintos": 28,
+    "coordenadas_oficiais": 28,
+    "coordenadas_aproximadas": 0
+  }
+}

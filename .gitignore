@@ -1,0 +1,22 @@
+# Ambiente virtual
+.venv/
+venv/
+ENV/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Arquivos pesados brutos do TSE (170+ MB baixados sob demanda)
+data/raw/
+*.zip
+
+# Streamlit local
+.streamlit/secrets.toml
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+*.log
