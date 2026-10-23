@@ -30,6 +30,7 @@ MUNICIPIO_ALVO = "NOVO GAMA"
 CD_MUNICIPIO_TSE = 93327
 CD_CARGO_VEREADOR = 13
 DS_CARGO_VEREADOR = "VEREADOR"
+DEFAULT_CANDIDATO_NR = "25123"  # André Farias (PRD)
 
 # ---------------------------------------------------------------------------
 # URLs oficiais do Repositório de Dados Abertos do TSE

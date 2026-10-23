@@ -36,6 +36,7 @@ from src.analytics import (
     get_totals,
 )
 from src.config import (
+    DEFAULT_CANDIDATO_NR,
     DEFAULT_ZOOM,
     GRID_COLOR,
     PRIMARY_COLOR,
@@ -412,16 +413,28 @@ def render_data_management(data: ElectionData) -> None:
         ["QT_VOTOS", "NM_URNA_CANDIDATO"], ascending=[False, True]
     )
     labels = {
-        row["NR_VOTAVEL"]: (
+        str(row["NR_VOTAVEL"]): (
             f"{row['NM_URNA_CANDIDATO']} · {row['SG_PARTIDO']} · "
             f"{format_int(row['QT_VOTOS'])} votos · {row['SITUACAO']}"
         )
         for _, row in filtered.iterrows()
     }
+    options_list = [str(nr) for nr in filtered["NR_VOTAVEL"].tolist()]
+    default_index = 0
+    target_nr = str(
+        st.session_state.get("selected_candidate")
+        or st.session_state.get("selected_nr")
+        or DEFAULT_CANDIDATO_NR
+    )
+    if target_nr in options_list:
+        default_index = options_list.index(target_nr)
+    elif DEFAULT_CANDIDATO_NR in options_list:
+        default_index = options_list.index(DEFAULT_CANDIDATO_NR)
+
     selected_nr = st.selectbox(
         "Candidato",
-        options=filtered["NR_VOTAVEL"].tolist(),
-        index=0,
+        options=options_list,
+        index=default_index,
         format_func=lambda value: labels.get(value, value),
         filter_mode="contains",
         key="selected_candidate",
@@ -1583,6 +1596,10 @@ def main() -> None:
     inject_css()
     data = get_data()
 
+    if "selected_candidate" not in st.session_state and "selected_nr" not in st.session_state:
+        st.session_state["selected_candidate"] = DEFAULT_CANDIDATO_NR
+        st.session_state["selected_nr"] = DEFAULT_CANDIDATO_NR
+
     with st.sidebar:
         render_data_management(data)
 
@@ -1591,10 +1608,14 @@ def main() -> None:
         return
 
     selected_nr = st.session_state.get("selected_nr")
-    if not selected_nr or selected_nr not in set(data.resumo["NR_VOTAVEL"].astype(str)):
-        selected_nr = data.resumo.sort_values("QT_VOTOS", ascending=False).iloc[0][
-            "NR_VOTAVEL"
-        ]
+    all_nrs = set(data.resumo["NR_VOTAVEL"].astype(str))
+    if not selected_nr or selected_nr not in all_nrs:
+        if DEFAULT_CANDIDATO_NR in all_nrs:
+            selected_nr = DEFAULT_CANDIDATO_NR
+        else:
+            selected_nr = data.resumo.sort_values("QT_VOTOS", ascending=False).iloc[0][
+                "NR_VOTAVEL"
+            ]
     cand = data.resumo[
         data.resumo["NR_VOTAVEL"].astype(str).eq(str(selected_nr))
     ].iloc[0]
